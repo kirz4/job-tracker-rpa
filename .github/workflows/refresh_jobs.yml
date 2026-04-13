@@ -1,0 +1,16 @@
+name: Run Job Scraper
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger scraper endpoint
+        run: |
+          curl -X GET "${{ secrets.RENDER_REFRESH_URL }}" \
+          -H "X-SCRAPER-SECRET: ${{ secrets.SCRAPER_SECRET }}"

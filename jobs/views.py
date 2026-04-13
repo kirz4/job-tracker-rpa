@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Job
+from django.conf import settings
 from .scraper import scrape_jobs
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 
 
 
@@ -50,3 +51,28 @@ def jobs_api(request):
     ]
 
     return JsonResponse({"jobs": data})
+def refresh_jobs_api(request):
+    secret = request.headers.get("X-SCRAPER-SECRET")
+
+    if secret != settings.SCRAPER_SECRET:
+        return HttpResponseForbidden("Unauthorized")
+
+    jobs_data = scrape_jobs()
+
+    saved = 0
+
+    for item in jobs_data:
+        obj, created = Job.objects.get_or_create(
+            title=item["title"],
+            company=item["company"],
+            location=item["location"],
+            defaults={"url": item["url"]},
+        )
+
+        if created:
+            saved += 1
+
+    return JsonResponse({
+        "status": "ok",
+        "new_jobs_saved": saved
+    })
