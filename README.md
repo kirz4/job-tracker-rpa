@@ -1,47 +1,131 @@
 # Job Tracker RPA
 
-Projeto de automação web desenvolvido com **Python, Django e
-SeleniumBase** para coletar e visualizar vagas de emprego em uma
-interface web simples.
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Django](https://img.shields.io/badge/django-5.x-green)
+![Automation](https://img.shields.io/badge/RPA-Web%20Automation-purple)
+![Deployment](https://img.shields.io/badge/deploy-render-black)
 
-O sistema executa um processo de **web scraping automatizado**, armazena
-os dados em banco e disponibiliza um **painel para consulta e
-atualização das vagas**.
+Sistema de **automação web (RPA)** desenvolvido com **Python, Django e
+SeleniumBase** para coletar, armazenar e visualizar vagas de emprego
+automaticamente.
+
+O projeto implementa um fluxo completo de automação:
+
+-   coleta automatizada de dados via scraping
+-   persistência em banco de dados
+-   dashboard para visualização
+-   API REST para consulta
+-   execução automática via scheduler
 
 ------------------------------------------------------------------------
 
-# Objetivo do Projeto
+# Deploy Online
 
-Este projeto demonstra conceitos importantes utilizados em **RPA
-(Robotic Process Automation)**:
+A aplicação está disponível online:
 
--   navegação automatizada em páginas web
--   extração estruturada de dados
--   persistência em banco de dados
--   interface para consulta dos dados coletados
--   execução manual da automação via interface ou terminal
+https://job-tracker-rpa.onrender.com
+
+Exemplo:
+
+    https://job-tracker-rpa.onrender.com/jobs/
+
+Endpoints disponíveis:
+
+    Dashboard
+    /jobs/
+
+    API
+    /jobs/api/jobs/
+
+    Admin
+    /admin/
+
+------------------------------------------------------------------------
+
+# Demonstração
+
+## Dashboard
+
+Adicione aqui um print do dashboard.
+
+    docs/dashboard.png
+
+![Dashboard](image-1.png)
+
+------------------------------------------------------------------------
+
+## Painel Admin Django
+
+Adicione aqui um print do painel administrativo.
+
+    docs/admin.png
+
+![Admin](image.png)
+
+------------------------------------------------------------------------
+
+## Busca de vagas
+
+Adicione aqui um print da busca funcionando.
+
+    docs/search.png
+
+![Search](image-2.png)
+
+------------------------------------------------------------------------
+
+# Arquitetura do Projeto
+
+O fluxo do sistema funciona assim:
+
+    GitHub Scheduler
+            ↓
+    GitHub Actions
+            ↓
+    Endpoint protegido Django
+            ↓
+    SeleniumBase Scraper
+            ↓
+    Banco de dados SQLite
+            ↓
+    Dashboard + API REST
 
 ------------------------------------------------------------------------
 
 # Tecnologias Utilizadas
 
+Backend
+
 -   Python
 -   Django
 -   SeleniumBase
+
+Infraestrutura
+
+-   Render (deploy cloud)
+-   GitHub Actions (scheduler automático)
+
+Banco de Dados
+
 -   SQLite
--   HTML / CSS
+
+Frontend
+
+-   HTML
+-   CSS
 
 ------------------------------------------------------------------------
 
 # Funcionalidades
 
--   Web scraping automatizado de vagas
--   Armazenamento dos dados em banco de dados
--   Listagem web das vagas coletadas
--   Busca por título da vaga
--   Painel administrativo com Django Admin
--   Atualização manual das vagas pela interface
--   Comando CLI para executar scraping
+✔ Web scraping automatizado de vagas\
+✔ Armazenamento persistente em banco\
+✔ Dashboard web para visualização\
+✔ Busca por título de vaga\
+✔ Painel administrativo Django\
+✔ Endpoint de API REST\
+✔ Atualização manual via interface\
+✔ Automação programada via GitHub Actions
 
 ------------------------------------------------------------------------
 
@@ -49,11 +133,11 @@ Este projeto demonstra conceitos importantes utilizados em **RPA
 
     Job_Tracker
     │
-    ├── core/                      # Configurações principais do Django
+    ├── core/
     │   ├── settings.py
     │   ├── urls.py
     │
-    ├── jobs/                      # App principal do projeto
+    ├── jobs/
     │   ├── management/
     │   │   └── commands/
     │   │       └── scrape_jobs.py
@@ -67,15 +151,69 @@ Este projeto demonstra conceitos importantes utilizados em **RPA
     │   ├── urls.py
     │   ├── scraper.py
     │
+    ├── .github/
+    │   └── workflows/
+    │       └── refresh_jobs.yml
+    │
     ├── manage.py
     ├── requirements.txt
     └── README.md
 
 ------------------------------------------------------------------------
 
-# Como Executar o Projeto
+# API
 
-## 1. Clonar o repositório
+### Listar vagas
+
+    GET /jobs/api/jobs/
+
+Resposta:
+
+``` json
+{
+  "jobs": [
+    {
+      "title": "Data Scientist",
+      "company": "Example Corp",
+      "location": "Remote",
+      "url": "...",
+      "collected_at": "2026-04-13"
+    }
+  ]
+}
+```
+
+------------------------------------------------------------------------
+
+# Automação (Scheduler)
+
+O scraper é executado automaticamente via **GitHub Actions**.
+
+Workflow:
+
+    .github/workflows/refresh_jobs.yml
+
+Cron configurado:
+
+    a cada 6 horas
+
+Fluxo:
+
+    GitHub Actions
+         ↓
+    curl request
+         ↓
+    Render endpoint
+         ↓
+    Django scraper
+         ↓
+    dados atualizados
+
+------------------------------------------------------------------------
+
+# Como Executar Localmente
+
+### 1 Clonar o repositório
 
 ``` bash
 git clone https://github.com/SEU_USUARIO/job-tracker-rpa.git
@@ -84,16 +222,16 @@ cd job-tracker-rpa
 
 ------------------------------------------------------------------------
 
-## 2. Criar ambiente virtual (recomendado)
+### 2 Criar ambiente virtual
 
-Linux / Mac:
+Linux / Mac
 
 ``` bash
 python -m venv venv
 source venv/bin/activate
 ```
 
-Windows:
+Windows
 
 ``` bash
 venv\Scripts\activate
@@ -101,7 +239,7 @@ venv\Scripts\activate
 
 ------------------------------------------------------------------------
 
-## 3. Instalar dependências
+### 3 Instalar dependências
 
 ``` bash
 pip install -r requirements.txt
@@ -109,7 +247,7 @@ pip install -r requirements.txt
 
 ------------------------------------------------------------------------
 
-## 4. Rodar migrações
+### 4 Rodar migrações
 
 ``` bash
 python manage.py migrate
@@ -117,7 +255,7 @@ python manage.py migrate
 
 ------------------------------------------------------------------------
 
-## 5. Executar scraping inicial
+### 5 Executar scraping inicial
 
 ``` bash
 python manage.py scrape_jobs
@@ -125,7 +263,7 @@ python manage.py scrape_jobs
 
 ------------------------------------------------------------------------
 
-## 6. Iniciar o servidor
+### 6 Rodar servidor
 
 ``` bash
 python manage.py runserver
@@ -133,32 +271,23 @@ python manage.py runserver
 
 ------------------------------------------------------------------------
 
-## 7. Acessar o sistema
+### Acessar
 
-Painel de vagas:
-
-http://127.0.0.1:8000/jobs/
-
-Admin Django:
-
-http://127.0.0.1:8000/admin/
+    http://127.0.0.1:8000/jobs/
 
 ------------------------------------------------------------------------
 
 # Executando o Scraper
 
-O scraper pode ser executado de duas formas.
-
-### Via terminal
+Via terminal
 
 ``` bash
 python manage.py scrape_jobs
 ```
 
-### Via interface
+Via interface
 
-No painel web existe um botão **"Atualizar vagas"** que executa a
-coleta.
+Clique em **Atualizar vagas** no dashboard.
 
 ------------------------------------------------------------------------
 
@@ -166,30 +295,22 @@ coleta.
 
 O scraper utiliza **SeleniumBase** para:
 
-1.  abrir a página de vagas
-2.  localizar os cards de vagas
-3.  extrair:
-    -   título
-    -   empresa
-    -   localização
-    -   URL
-4.  retornar os dados estruturados
-5.  salvar no banco via Django ORM
+1 abrir página de vagas\
+2 localizar cards de vagas\
+3 extrair
 
-Para evitar duplicação de registros, o sistema utiliza uma constraint
-baseada em:
+-   título
+-   empresa
+-   localização
+-   url
 
-(title, company, location)
+4 retornar dados estruturados\
+5 salvar via Django ORM
 
-------------------------------------------------------------------------
+Para evitar duplicação de registros é utilizada uma chave lógica baseada
+em:
 
-# Possíveis Melhorias Futuras
-
--   paginação das vagas
--   filtros por empresa e localização
--   agendamento automático do scraper
--   exportação de dados para CSV
--   integração com APIs de vagas
+    title + company + location
 
 ------------------------------------------------------------------------
 
@@ -197,8 +318,8 @@ baseada em:
 
 Lucas Cruz
 
-Projeto desenvolvido para fins de estudo e demonstração de automação web
-com Python.
+Projeto desenvolvido para estudo de **automação web (RPA) e backend com
+Django**.
 
 ------------------------------------------------------------------------
 
