@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 320px;
+        }
+
+        button {
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .meta {
+            color: #666;
+            margin: 6px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Tracker</h1>
+
+    <form method="get">
+        <input type="text" name="q" placeholder="Buscar por título..." value="{{ query }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% for job in jobs %}
+        <div class="card">
+            <h2>{{ job.title }}</h2>
+            <p class="meta"><strong>Empresa:</strong> {{ job.company }}</p>
+            <p class="meta"><strong>Localização:</strong> {{ job.location }}</p>
+            <p class="meta"><strong>Coletado em:</strong> {{ job.collected_at }}</p>
+            <a href="{{ job.url }}" target="_blank">Ver vaga</a>
+        </div>
+    {% empty %}
+        <p>Nenhuma vaga encontrada.</p>
+    {% endfor %}
+</body>
+</html>
