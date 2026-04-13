@@ -11,7 +11,13 @@
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .summary {
+            margin-bottom: 24px;
+            font-size: 18px;
+            color: #333;
         }
 
         form {
@@ -33,7 +39,7 @@
             padding: 18px;
             border-radius: 10px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .meta {
@@ -49,6 +55,7 @@
 </head>
 <body>
     <h1>Job Tracker</h1>
+    <p class="summary">Total de vagas encontradas: {{ total_jobs }}</p>
 
     <form method="get">
         <input type="text" name="q" placeholder="Buscar por título..." value="{{ query }}">

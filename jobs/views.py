@@ -4,7 +4,7 @@ from .models import Job
 
 def job_list(request):
     query = request.GET.get("q", "")
-    jobs = Job.objects.all().order_by("-collected_at")
+    jobs = Job.objects.all().order_by("-collected_at", "title")
 
     if query:
         jobs = jobs.filter(title__icontains=query)
@@ -12,5 +12,6 @@ def job_list(request):
     context = {
         "jobs": jobs,
         "query": query,
+        "total_jobs": jobs.count(),
     }
     return render(request, "jobs/job_list.html", context)
