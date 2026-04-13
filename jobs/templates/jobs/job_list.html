@@ -20,8 +20,21 @@
             color: #333;
         }
 
-        form {
+        .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
             margin-bottom: 20px;
+        }
+
+        form.search-form {
+            display: flex;
+            gap: 8px;
+            margin: 0;
+        }
+
+        form.refresh-form {
+            margin: 0;
         }
 
         input[type="text"] {
@@ -32,6 +45,13 @@
         button {
             padding: 10px 14px;
             cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: white;
+        }
+
+        .refresh-btn {
+            font-weight: bold;
         }
 
         .card {
@@ -57,10 +77,17 @@
     <h1>Job Tracker</h1>
     <p class="summary">Total de vagas encontradas: {{ total_jobs }}</p>
 
-    <form method="get">
-        <input type="text" name="q" placeholder="Buscar por título..." value="{{ query }}">
-        <button type="submit">Buscar</button>
-    </form>
+    <div class="actions">
+        <form method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por título..." value="{{ query }}">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <form method="post" action="{% url 'refresh_jobs' %}" class="refresh-form">
+            {% csrf_token %}
+            <button type="submit" class="refresh-btn">Atualizar vagas</button>
+        </form>
+    </div>
 
     {% for job in jobs %}
         <div class="card">

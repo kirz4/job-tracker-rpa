@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Job
+from .scraper import scrape_jobs
 
 
 def job_list(request):
@@ -15,3 +16,20 @@ def job_list(request):
         "total_jobs": jobs.count(),
     }
     return render(request, "jobs/job_list.html", context)
+
+
+def refresh_jobs(request):
+    if request.method == "POST":
+        jobs_data = scrape_jobs()
+
+        for item in jobs_data:
+            Job.objects.get_or_create(
+                title=item["title"],
+                company=item["company"],
+                location=item["location"],
+                defaults={
+                    "url": item["url"],
+                },
+            )
+
+    return redirect("/jobs/")
