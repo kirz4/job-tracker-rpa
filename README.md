@@ -46,7 +46,6 @@ Endpoints disponíveis:
 
 ## Dashboard
 
-Adicione aqui um print do dashboard.
 
     docs/dashboard.png
 
@@ -56,7 +55,6 @@ Adicione aqui um print do dashboard.
 
 ## Painel Admin Django
 
-Adicione aqui um print do painel administrativo.
 
     docs/admin.png
 
@@ -66,7 +64,6 @@ Adicione aqui um print do painel administrativo.
 
 ## Busca de vagas
 
-Adicione aqui um print da busca funcionando.
 
     docs/search.png
 
