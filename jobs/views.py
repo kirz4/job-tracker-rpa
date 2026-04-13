@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Job
 from .scraper import scrape_jobs
+from django.http import JsonResponse
+
 
 
 def job_list(request):
@@ -33,3 +35,18 @@ def refresh_jobs(request):
             )
 
     return redirect("/jobs/")
+def jobs_api(request):
+    jobs = Job.objects.all().order_by("-collected_at")[:50]
+
+    data = [
+        {
+            "title": job.title,
+            "company": job.company,
+            "location": job.location,
+            "url": job.url,
+            "collected_at": job.collected_at,
+        }
+        for job in jobs
+    ]
+
+    return JsonResponse({"jobs": data})
